@@ -17,7 +17,7 @@ export const SignIn = () =>{
         <div className="body">
         <Flex h={"100vh"} w={"100vw"} >
             <Flex w={{base:"100%", lg:"50%"}} m={"10rem"} direction="column" alignItems="center" justifyContent= "center">
-               <Text w={"100%"} mb={"0.6rem"} textAlign={"left"} fontSize={"14px"}>New Here? <Link style={{textDecoration: "underline", color: "green"}}>Create an account</Link></Text>
+               <Text w={"100%"} mb={"0.6rem"} textAlign={"left"} fontSize={"14px"}>New Here? <Link style={{textDecoration: "underline", color: "green"}} to={"/signup"}>Create an account</Link></Text>
                <Text w={"100%"} textAlign={"left"} mb={"1.5rem"} fontSize={"28px"}>Welcome Again!</Text>
                <FormControl>
                     <FormLabel ml={"0.3rem"} fontWeight={"semibold"} fontSize={"16px"}>Username</FormLabel>
@@ -27,7 +27,6 @@ export const SignIn = () =>{
                     <Text w="100%" color={"gray.400"} my="1rem" textAlign="right" fontSize="14px" ><Link>Forgot Password?</Link></Text>
                     <Button w="100%" bg="#0C8B28" color="white">Log In</Button>
                </FormControl>
-               
             </Flex>
             <Box w="50%" display={{base: "none", lg: "block"}}>
                 <Image w="100%" h="100%" src={Divine}></Image>
