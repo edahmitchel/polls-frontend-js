@@ -39,10 +39,15 @@ export const SignUp = () =>{
                     <FormLabel mt={"1.4rem"} ml={"0.3rem"} fontWeight={"semibold"} fontSize={"16px"}>Password</FormLabel>
                     <Flex alignItems="center" justifyContent="right" ><Input zIndex="0" position="absolute" type={eyeopen ? "text" : "password"} w={"100%"} placeholder={"............"}></Input>{eyeopen ? <AiFillEye onClick={()=>setEyeOpen(false)} size={"30px"} style={{paddingRight: "0.6rem" , color: "#0C8B28", cursor: 'pointer', zIndex: '10'}}></AiFillEye> : <AiFillEyeInvisible onClick={() => setEyeOpen(true)} size={"30px"} style={{paddingRight: "0.6rem", color: "#0C8B28", cursor: "pointer", zIndex: '10'}}></AiFillEyeInvisible>}</Flex>
                     <FormLabel mt={"1.4rem"} ml={"0.3rem"} fontWeight={"semibold"} fontSize={"16px"}>Confirm Password</FormLabel>
-                    <Flex alignItems="center" justifyContent="right" ><Input zIndex="0" position="absolute" type={eyeopen2 ? "text" : "password"} w={"100%"} placeholder={"............"}></Input>{eyeopen2 ? <AiFillEye onClick={()=>setEyeOpen2(false)} size={"30px"} style={{paddingRight: "0.6rem" , color: "#0C8B28", cursor: 'pointer', zIndex: '10'}}></AiFillEye> : <AiFillEyeInvisible onClick={() => setEyeOpen2(true)} size={"30px"} style={{paddingRight: "0.6rem", color: "#0C8B28", cursor: "pointer", zIndex: '10'}}></AiFillEyeInvisible>}</Flex>
-                    <Text w="100%" color={"gray.400"} my="1rem" textAlign="right" fontSize="14px" ><Link>Forgot Password?</Link></Text>
-                    <Button w="100%" bg="#0C8B28" color="white">Sign In</Button>
-
+                    <Flex alignItems="center" justifyContent="right" >
+                        <Input zIndex="0" position="absolute" type={eyeopen2 ? "text" : "password"} w={"100%"} placeholder={"............"}></Input>{eyeopen2 ? <AiFillEye onClick={()=>setEyeOpen2(false)} size={"30px"} style={{paddingRight: "0.6rem" , color: "#0C8B28", cursor: 'pointer', zIndex: '10'}}></AiFillEye> : <AiFillEyeInvisible onClick={() => setEyeOpen2(true)} size={"30px"} style={{paddingRight: "0.6rem", color: "#0C8B28", cursor: "pointer", zIndex: '10'}}></AiFillEyeInvisible>}
+                    </Flex>
+                    <Text w="100%" color={"gray.400"} my="1rem" textAlign="right" fontSize="14px">
+                        <Link>Forgot Password?</Link>
+                    </Text>
+                    <Link to={"/registerDetails"}>
+                        <Button _active={{bg: "#0C8B28", color: "white"}} _hover={{bg:"white",color: "#0C8B28", borderColor: "#0C8B28", borderWidth: "1px"}} w="100%" bg="#0C8B28" color="white">Sign Up</Button>
+                    </Link>
                </FormControl>
             </Flex>
             <Box w="50%" display={{base: "none", lg: "block"}}>
