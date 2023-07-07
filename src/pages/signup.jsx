@@ -5,7 +5,8 @@ import { useState } from "react";
 import Divine from "../assets/images/manvote.png";
 import {Link } from "react-router-dom";
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
-import { useLoginUserMutation } from "../assets/api/apiSlice";
+// import { useLoginUserMutation } from "../assets/api/apiSlice";
+import { useRegisterUserMutation } from "../assets/api/apiSlice";
 import {
     FormControl,
     FormLabel,
@@ -42,9 +43,9 @@ export const SignUp = () =>{
         }
         return error
     }
-    const [loginUser]= useLoginUserMutation();
+    const [createUser]= useRegisterUserMutation();
     const HandleSubmit = (values) =>{
-       let res = loginUser({firstname: values.firstName.trim(), lastname: values.lastName.trim(),username: values.userName.trim(), password: values.password.trim(), })   
+       let res = createUser({firstname: values.firstName.trim(), lastname: values.lastName.trim(),username: values.userName.trim(), password: values.password.trim(), })   
         console.log(res);
     }
         return (

@@ -5,20 +5,22 @@ export const apiSlice = createApi({
     reducerPath: "api",
     baseQuery: fetchBaseQuery( {baseUrl: "https://pollsapp-36x1.onrender.com/"}),
     endpoints: (builder) => ({
-            loginUser: builder.mutation({
+            registerUser: builder.mutation({
                 query: (newUser) => ({
                     url: '/auth/signup',
                     method: "POST",
-                    body: {
-                        firstName: newUser.firstName,
-                        lastName: newUser.lastName,
-                        userName: newUser.userName,
-                        password: newUser.password
-                    }
+                    body: newUser
+                }),
+            }),
+            loginUser: builder.mutation({
+                query: (userData) => ({
+                    url: "/auth/login",
+                    method: "POST",
+                    body: userData
                 }),
             })
     })
 });
 
 
-export const { useLoginUserMutation } = apiSlice; 
+export const { useRegisterUserMutation, useLoginUserMutation } = apiSlice; 

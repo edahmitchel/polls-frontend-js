@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+import { useLoginUserMutation } from "../assets/api/apiSlice";
 import {Flex, Box, Spacer, Text, Input, Image, Button } from "@chakra-ui/react";
 import { useState } from "react";
 import Divine from "../assets/images/liner.png";
@@ -24,6 +25,20 @@ export const SignIn = () =>{
             // alert(error)
         }
         return error;
+    }
+    const passwordValidate = (value) =>{
+      let error;
+      if(value < 5){
+        error = "Password is more than five characters";
+      }else if(!value){
+        error = "Password is required";
+      }
+      return error;
+    }
+    const [addNewUser] = useLoginUserMutation();
+    const HandleSubmit = (value) => {
+      let response =  addNewUser({username: value.username.trim(), password: value.password.trim()});
+      console.log(response);
     }
     return (
       <>
@@ -61,10 +76,7 @@ export const SignIn = () =>{
               <Formik
                 initialValues={{ username: "", password: "" }}
                 validateOnChange={true}
-                onSubmit={async (values) =>{
-                    await new Promise((r) => setTimeout(r, 500));
-                    alert(JSON.stringify(values, null, 2));
-                }}
+                onSubmit={HandleSubmit}
               >
                 {(props) => (
                   <Form style={{ width: "100%" }}>
@@ -72,7 +84,7 @@ export const SignIn = () =>{
                       {(props) => (
                         <FormControl
                           isInvalid={
-                            props.form.errors.name && props.form.touched.name
+                            props.form.errors.username && props.form.touched.username
                           }
                         >
                           <FormLabel
@@ -88,19 +100,16 @@ export const SignIn = () =>{
                             w={"100%"}
                             placeholder={"Enter your Username"}
                           ></Input>
-                          {props.form.errors.username ? (
+                         
                             <FormErrorMessage w={"full"} textColor={"red"}>
                               {props.form.errors.username}
                             </FormErrorMessage>
-                          ) : (
-                            <></>
-                          )}
                         </FormControl>
                       )}
                     </Field>
-                    <Field name="password">
+                    <Field name="password" validate = {passwordValidate}>
                       {(props) => (
-                        <FormControl isRequired>
+                        <FormControl isInvalid={props.form.errors.password && props.form.touched.password}>
                           <FormLabel
                             mt={"1.4rem"}
                             ml={"0.3rem"}
@@ -143,6 +152,7 @@ export const SignIn = () =>{
                               ></AiFillEyeInvisible>
                             )}
                           </Flex>
+                          <FormErrorMessage>{props.form.errors.password}</FormErrorMessage>
                         </FormControl>
                       )}
                     </Field>
