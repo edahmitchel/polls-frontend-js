@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {Flex, Box, Spacer, Text, Input, Image, Button, Heading } from "@chakra-ui/react";
 import {BsCheck2, BsThreeDots} from "react-icons/bs";
 import Flier from "../assets/images/bg.png";

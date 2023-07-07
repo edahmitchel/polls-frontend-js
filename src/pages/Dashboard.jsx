@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {Flex, Box, Spacer, Text, Input, Image, Button, Heading, Center } from "@chakra-ui/react";
 import { useState,  } from "react";
 import Rec from "../assets/images/flier.png";
