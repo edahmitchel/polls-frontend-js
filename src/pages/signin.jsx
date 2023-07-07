@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import {Flex, Box, Spacer, Text, Input, Image, Button } from "@chakra-ui/react";
 import { useState } from "react";
