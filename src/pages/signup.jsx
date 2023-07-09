@@ -54,7 +54,9 @@ export const SignUp = () =>{
               <Flex h={"100vh"} w={"100vw"}>
                 <Flex
                   w={{ base: "100%", lg: "50%" }}
-                  m={"10rem"}
+                  mb={"2rem"}
+                  h={{base:"fit-content", sm: "auto"}}
+                  m={{base:"2rem", sm:"2rem", lg:"5rem"}}
                   direction="column"
                   alignItems="center"
                   justifyContent="center"
@@ -90,7 +92,7 @@ export const SignUp = () =>{
                   >
                     {(props) => (
                       <Form style={{width: "100%"}}>
-                        <Flex direction="row" w="100%">
+                        <Box display={"flex"} flexDirection={{base:"column", sm: "row", md: "row"}} w="100%">
                             <Field name="firstName" validate = {textValidate}>
                                 {(props) =>(
                                     <FormControl w={"auto"} isInvalid= {props.form.errors.firstName && props.form.errors.firstName}>
@@ -137,7 +139,7 @@ export const SignUp = () =>{
                                 </FormControl>
                             )}
                           </Field>
-                        </Flex>
+                        </Box>
                         <Field name="userName" validate={textValidate}>
                         {(props) => (
                             <FormControl isInvalid={props.form.errors.userName && props.form.touched.userName}>

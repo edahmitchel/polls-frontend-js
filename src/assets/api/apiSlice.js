@@ -9,14 +9,14 @@ export const apiSlice = createApi({
                 query: (newUser) => ({
                     url: '/api/auth/signup',
                     method: "POST",
-                    body: newUser
+                    data: newUser
                 }),
             }),
             loginUser: builder.mutation({
                 query: (userData) => ({
                     url: "/api/auth/login",
                     method: "POST",
-                    body: userData
+                    data: userData
                 }),
             })
     })
