@@ -35,10 +35,11 @@ export const SignIn = () =>{
       }
       return error;
     }
-    const [addNewUser] = useLoginUserMutation();
-    const HandleSubmit = (value) => {
-      let response =  addNewUser({username: value.username.trim(), password: value.password.trim()});
-      console.log(response);
+    const [addNewUser, result] = useLoginUserMutation();
+    const HandleSubmit = async (value) => {
+      await addNewUser({username: value.username.trim(), password: value.password.trim()}).then((result) =>{
+        console.log(result)
+      });
     }
     return (
       <>

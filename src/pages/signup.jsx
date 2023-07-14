@@ -3,7 +3,8 @@
 import {Flex, Box, Spacer, Text, Input, Image, Button } from "@chakra-ui/react";
 import { useState } from "react";
 import Divine from "../assets/images/manvote.png";
-import {Link } from "react-router-dom";
+import {Link, useNavigate } from "react-router-dom";
+
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
 // import { useLoginUserMutation } from "../assets/api/apiSlice";
 import { useRegisterUserMutation } from "../assets/api/apiSlice";
@@ -17,7 +18,8 @@ import {
 export const SignUp = () =>{
     const [eyeopen, setEyeOpen] = useState(false);
     const [eyeopen2, setEyeOpen2] = useState(false);
-    const [password, setPassword] = useState("")
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
     const textValidate = (value) =>{
         let error;
         if(value.length < 1){
@@ -43,10 +45,15 @@ export const SignUp = () =>{
         }
         return error
     }
-    const [createUser]= useRegisterUserMutation();
-    const HandleSubmit = (values) =>{
-       let res = createUser({firstname: values.firstName.trim(), lastname: values.lastName.trim(),username: values.userName.trim(), password: values.password.trim(), })   
-        console.log(res);
+    const [createUser, result]= useRegisterUserMutation();
+    const HandleSubmit = async (values) =>{
+        await createUser({firstname: values.firstName.trim(), lastname: values.lastName.trim(),username: values.userName.trim(), password: values.password.trim(), }).then((result) =>{
+          console.log(result);
+       
+          if(result.data.message === "User registered successfully"){
+            navigate("/dashboard")
+          }
+        })
     }
         return (
           <>
