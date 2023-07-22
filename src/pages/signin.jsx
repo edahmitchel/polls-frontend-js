@@ -4,7 +4,7 @@ import { useLoginUserMutation } from "../assets/api/apiSlice";
 import {Flex, Box, Spacer, Text, Input, Image, Button } from "@chakra-ui/react";
 import { useState } from "react";
 import Divine from "../assets/images/liner.png";
-import {Link } from "react-router-dom";
+import {Link, useNavigate } from "react-router-dom";
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai"
 import {
     FormControl,
@@ -15,6 +15,7 @@ import {
 import { Field, Formik, Form} from "formik";
 export const SignIn = () =>{
     const [eyeopen, setEyeOpen] = useState(false);
+    let navigate = useNavigate();
     const usernameValidation = (value) =>{
         let error;
         if(value === '' || !value){
@@ -39,6 +40,9 @@ export const SignIn = () =>{
     const HandleSubmit = async (value) => {
       await addNewUser({username: value.username.trim(), password: value.password.trim()}).then((result) =>{
         console.log(result)
+        if(result?.data?.message == "Login successful"){
+          navigate("/dashboard");
+        }
       });
     }
     return (

@@ -49,9 +49,8 @@ export const SignUp = () =>{
     const HandleSubmit = async (values) =>{
         await createUser({firstname: values.firstName.trim(), lastname: values.lastName.trim(),username: values.userName.trim(), password: values.password.trim(), }).then((result) =>{
           console.log(result);
-       
-          if(result.data.message === "User registered successfully"){
-            navigate("/dashboard")
+          if(result?.data?.message === "User registered successfully"){
+           navigate("/dashboard");
           }
         })
     }
