@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useLoginUserMutation } from "../assets/api/apiSlice";
+import { useLoginUserMutation } from "../assets/app/api/apiSlice";
 import {Flex, Box, Spacer, Text, Input, Image, Button } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Divine from "../assets/images/liner.png";
-import {Link, useNavigate } from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai"
 import {
     FormControl,
@@ -15,7 +15,14 @@ import {
 import { Field, Formik, Form} from "formik";
 export const SignIn = () =>{
     const [eyeopen, setEyeOpen] = useState(false);
-    let navigate = useNavigate();
+    const [auth, setAuth ] = useState(false);
+    const[fetchState, setFetchState] = useState('')
+    // let navigate = useNavigate();
+    useEffect(() =>{
+      setAuth(sessionStorage.getItem("pollsAuthState") || null);
+      
+      // return sessionStorage.removeItem("pollsAuthState")
+    }, [])
     const usernameValidation = (value) =>{
         let error;
         if(value === '' || !value){
@@ -41,10 +48,14 @@ export const SignIn = () =>{
       await addNewUser({username: value.username.trim(), password: value.password.trim()}).then((result) =>{
         console.log(result)
         if(result?.data?.message == "Login successful"){
-          navigate("/dashboard");
+          sessionStorage.setItem("pollsAuthState", JSON.stringify(true));
+           setAuth(JSON.parse(sessionStorage.getItem("pollsAuthState")));
         }
       });
     }
+    if(auth){
+        return  <Navigate replace to="/dashboard"/> 
+    }else{
     return (
       <>
         <div className="body">
@@ -85,6 +96,7 @@ export const SignIn = () =>{
               >
                 {(props) => (
                   <Form style={{ width: "100%" }}>
+                     {fetchState !== '' &&  <Text color={'red'} border={"1px"} w={'full'} borderColor={"red"} p={'0.5rem'}>{fetchState}</Text>}
                     <Field name="username" validate={usernameValidation}>
                       {(props) => (
                         <FormControl
@@ -197,4 +209,5 @@ export const SignIn = () =>{
         </div>
       </>
     );
+  }
 }
