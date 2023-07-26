@@ -7,7 +7,7 @@ import {Link, Navigate } from "react-router-dom";
 
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
 // import { useLoginUserMutation } from "../assets/api/apiSlice";
-import { useRegisterUserMutation } from "../assets/app/api/apiSlice";
+import { useRegisterUserMutation } from "../assets/app/api/authApiSlice";
 import {
     FormControl,
     FormLabel,

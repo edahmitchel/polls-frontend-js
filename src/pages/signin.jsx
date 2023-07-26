@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useLoginUserMutation } from "../assets/app/api/apiSlice";
+import { useLoginUserMutation } from "../assets/app/api/authApiSlice";
 import {Flex, Box, Spacer, Text, Input, Image, Button } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import Divine from "../assets/images/liner.png";
