@@ -26,7 +26,10 @@ const pollsRouter = createBrowserRouter([
     element: <SignUp></SignUp>,
    
   },
-  
+  {
+    path: "/addElectoralDetails",
+    element: <AddElectoralDetails></AddElectoralDetails> 
+  },
   {
     path: "/dashboard",
     element: <Dashboard></Dashboard>,
@@ -35,10 +38,7 @@ const pollsRouter = createBrowserRouter([
         path: "/dashboard/registerDetails/:userinfo",
         element: <MoreInfo></MoreInfo>
       },
-      {
-        path: "/dashboard/addElectoralDetails",
-        element: <AddElectoralDetails></AddElectoralDetails> 
-      }
+      
     ]
    
   }

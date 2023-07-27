@@ -6,7 +6,7 @@ import {BsCheck2, BsThreeDots} from "react-icons/bs";
 import Flier from "../assets/images/bg.png";
 import { useEffect} from "react";
 import Divine from "../assets/images/manvote.png";
-import {Navigate } from "react-router-dom";
+import {Navigate, Link, Outlet} from "react-router-dom";
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
 import {
     FormControl,
@@ -48,8 +48,10 @@ export const Dashboard = () =>{
                     </Box>
                 </Box>
                 <Box as="aside" w={"40%"} m={"2rem"}>
-                    <Flex direction={"column"}>
-                     <MyButton add={true} textInfo = {"Create Upcoming Election"} bgCol={Colors.primary}></MyButton>
+                    <Flex w={"100%"} direction={"column"}>
+                     <Link style={{width: '100%'}} to={"/addElectoralDetails"}>
+                        <MyButton add={true} textInfo = {"Create Upcoming Election"} bgCol={Colors.primary}></MyButton>
+                     </Link>
                      <MyButton add= {false} textInfo= {"Creators dashboard login"} bgCol = {Colors.unknown} ></MyButton>
                     </Flex>
                     <Flex w={"full"} direction={"column"} p={"4"} borderWidth={"1px"}  rounded={"md"}>
