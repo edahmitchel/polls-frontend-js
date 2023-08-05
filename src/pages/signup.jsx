@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import {Flex, Box, Spacer, Text, Input, Image, Button } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Divine from "../assets/images/manvote.png";
-import {Link, useNavigate } from "react-router-dom";
+import {Link, Navigate } from "react-router-dom";
 
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
 // import { useLoginUserMutation } from "../assets/api/apiSlice";
-import { useRegisterUserMutation } from "../assets/api/apiSlice";
+import { useRegisterUserMutation } from "../assets/app/api/authApiSlice";
 import {
     FormControl,
     FormLabel,
@@ -19,7 +19,14 @@ export const SignUp = () =>{
     const [eyeopen, setEyeOpen] = useState(false);
     const [eyeopen2, setEyeOpen2] = useState(false);
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
+    const [auth, setAuth] = useState(JSON.parse(sessionStorage.getItem("pollsAuthState") || null));
+    const [fetchState, setFetchState] = useState("")
+    // const navigate = useNavigate();
+    useEffect(() =>{
+      setAuth(sessionStorage.getItem("pollsAuthState") || null);
+      
+      // return sessionStorage.removeItem("pollsAuthState")
+    }, [])
     const textValidate = (value) =>{
         let error;
         if(value.length < 1){
@@ -50,10 +57,17 @@ export const SignUp = () =>{
         await createUser({firstname: values.firstName.trim(), lastname: values.lastName.trim(),username: values.userName.trim(), password: values.password.trim(), }).then((result) =>{
           console.log(result);
           if(result?.data?.message === "User registered successfully"){
-           navigate("/dashboard");
+           sessionStorage.setItem("pollsAuthState", JSON.stringify(true));
+           setAuth(JSON.parse(sessionStorage.getItem("pollsAuthState")));
+          }
+          if(result.error){
+            setFetchState("Poor network connectivity, check your internet settings!")
           }
         })
     }
+    if(auth){
+      return <Navigate replace to={"/dashboard"}/>
+    }else{
         return (
           <>
             <div className="body">
@@ -98,9 +112,11 @@ export const SignUp = () =>{
                   >
                     {(props) => (
                       <Form style={{width: "100%"}}>
+                        {fetchState !== '' &&  <Text color={'red'} border={"1px"} w={'full'} borderColor={"red"} p={'0.5rem'}>{fetchState}</Text>}
                         <Box display={"flex"} flexDirection={{base:"column", sm: "row", md: "row"}} w="100%">
                             <Field name="firstName" validate = {textValidate}>
                                 {(props) =>(
+                                    // <FormErrorMessage></FormErrorMessage>
                                     <FormControl w={"auto"} isInvalid= {props.form.errors.firstName && props.form.errors.firstName}>
                                         <Flex direction="column" mb="1.5rem">
                                             <FormLabel
@@ -303,4 +319,5 @@ export const SignUp = () =>{
             </div>
           </>
         );
+    }
 }

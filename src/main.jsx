@@ -11,9 +11,10 @@ import { SignIn } from './pages/signin';
 import { SignUp } from './pages/signup';
 
 import { ApiProvider } from '@reduxjs/toolkit/query/react/';
-import { apiSlice } from './assets/api/apiSlice.js';
+import { apiSlice } from './assets/app/api/apiSlice.js';
 import { MoreInfo } from './pages/signup2.jsx';
 import { Dashboard } from './pages/Dashboard.jsx';
+import { AddElectoralDetails } from './pages/AddElectoralDetails';
 
 const pollsRouter = createBrowserRouter([
   {
@@ -22,15 +23,24 @@ const pollsRouter = createBrowserRouter([
   },
   {
     path: "/signup",
-    element: <SignUp></SignUp>
+    element: <SignUp></SignUp>,
+   
   },
   {
-    path: "/registerDetails",
-    element: <MoreInfo></MoreInfo>
+    path: "/addElectoralDetails",
+    element: <AddElectoralDetails></AddElectoralDetails> 
   },
   {
     path: "/dashboard",
-    element: <Dashboard></Dashboard>
+    element: <Dashboard></Dashboard>,
+    children: [
+      {
+        path: "/dashboard/registerDetails/:userinfo",
+        element: <MoreInfo></MoreInfo>
+      },
+      
+    ]
+   
   }
 ])
 
