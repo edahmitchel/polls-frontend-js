@@ -13,11 +13,14 @@ import {
     FormHelperText,
   } from '@chakra-ui/react';
 import { Field, Formik, Form} from "formik";
+import { useSelector, useDispatch } from "react-redux";
+import { login } from "../assets/app/slices/authSlice";
 export const SignIn = () =>{
     const [eyeopen, setEyeOpen] = useState(false);
     const [auth, setAuth ] = useState(false);
     const[fetchState, setFetchState] = useState('')
     // let navigate = useNavigate();
+    let dispatch = useDispatch();
     useEffect(() =>{
       setAuth(sessionStorage.getItem("pollsAuthState") || null);
       
@@ -45,11 +48,16 @@ export const SignIn = () =>{
     }
     const [addNewUser, result] = useLoginUserMutation();
     const HandleSubmit = async (value) => {
-      await addNewUser({username: value.username.trim(), password: value.password.trim()}).then((result) =>{
+      let packet = {
+        username: value.username.trim(),
+        password: value.password.trim()
+      }
+      await addNewUser(packet).then((result) =>{
         console.log(result)
         if(result?.data?.message == "Login successful"){
           sessionStorage.setItem("pollsAuthState", JSON.stringify(true));
            setAuth(JSON.parse(sessionStorage.getItem("pollsAuthState")));
+           dispatch(login(packet));
         }
       });
     }

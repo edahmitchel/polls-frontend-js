@@ -12,7 +12,8 @@ import {
 } from "react-router-dom";
 import { SignIn } from './pages/signin';
 import { SignUp } from './pages/signup';
-
+import { Provider } from "react-redux";
+import { store } from './assets/app/store';
 import { ApiProvider } from '@reduxjs/toolkit/query/react/';
 import { apiSlice } from './assets/app/api/apiSlice.js';
 import { MoreInfo } from './pages/signup2.jsx';
@@ -49,7 +50,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ChakraProvider>
       <ApiProvider api={apiSlice}>
+        <Provider store={store}>
           <RouterProvider router={pollsRouter}></RouterProvider>
+        </Provider>
       </ApiProvider>
     </ChakraProvider>
   </React.StrictMode>,

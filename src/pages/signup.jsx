@@ -4,10 +4,11 @@ import {Flex, Box, Spacer, Text, Input, Image, Button } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import Divine from "../assets/images/manvote.png";
 import {Link, Navigate } from "react-router-dom";
-
+import { login } from "../assets/app/slices/authSlice";
 import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai";
 // import { useLoginUserMutation } from "../assets/api/apiSlice";
 import { useRegisterUserMutation } from "../assets/app/api/authApiSlice";
+import { useSelector, useDispatch } from "react-redux";
 import {
     FormControl,
     FormLabel,
@@ -20,7 +21,8 @@ export const SignUp = () =>{
     const [eyeopen2, setEyeOpen2] = useState(false);
     const [password, setPassword] = useState("");
     const [auth, setAuth] = useState(JSON.parse(sessionStorage.getItem("pollsAuthState") || null));
-    const [fetchState, setFetchState] = useState("")
+    const [fetchState, setFetchState] = useState("");
+    const dispatch = useDispatch();
     // const navigate = useNavigate();
     useEffect(() =>{
       setAuth(sessionStorage.getItem("pollsAuthState") || null);
@@ -54,11 +56,19 @@ export const SignUp = () =>{
     }
     const [createUser, result]= useRegisterUserMutation();
     const HandleSubmit = async (values) =>{
-        await createUser({firstname: values.firstName.trim(), lastname: values.lastName.trim(),username: values.userName.trim(), password: values.password.trim(), }).then((result) =>{
+        let packet = {
+          firstname: values.firstName.trim(),
+          lastname: values.lastName.trim(),
+          username: values.userName.trim(),
+          password: values.password.trim(),
+        }
+        await createUser(packet).then((result) =>{
           console.log(result);
           if(result?.data?.message === "User registered successfully"){
            sessionStorage.setItem("pollsAuthState", JSON.stringify(true));
            setAuth(JSON.parse(sessionStorage.getItem("pollsAuthState")));
+           let {username, password} = packet;
+            dispatch(login({username, password}));
           }
           if(result.error){
             setFetchState("Poor network connectivity, check your internet settings!")
