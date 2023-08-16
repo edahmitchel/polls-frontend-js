@@ -1,15 +1,55 @@
-import {Flex, Box, Spacer, Text, Input, Image, Button } from "@chakra-ui/react";
 import {
+    Flex, 
+    Box, 
+    Spacer, 
+    Text, 
+    Input, 
+    Image, 
+    Button,
     FormControl,
     FormLabel,
     FormErrorMessage,
     FormHelperText,
-  } from '@chakra-ui/react';
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+ 
+} from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import {Colors} from "../assets/constants/colors.js"
 import Liner from "../assets/images/newLiner.png"
 import { CandidateForm } from "../components/CandidateForm.jsx";
 export const AddElectoralDetails = () =>{
+    const {isOpen, onOpen, onClose } = useDisclosure(); 
     return (
+        <>
+        <Modal isOpen={isOpen} size={'4xl'}  onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+            <Flex h={'10rem'} dir="column" alignItems={'end'} bgSize={'cover'} bgImage={Liner} p="1rem">
+                <Text textTransform={'uppercase'} fontSize={"3xl"} color={'white'} fontWeight="bold">
+                    creators dashboard
+                </Text>
+            </Flex>
+          {/* <ModalHeader>Modal Title</ModalHeader> */}
+          {/* <ModalCloseButton /> */}
+          <ModalBody display={'flex'} dir={"row"} alignItems={"center"} justifyContent={"center"}>
+           <Text textTransform={'capitalize'} fontWeight={'bold'} fontSize={'2xl'} my={'10px'}>
+            Election creation successful
+           </Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button color={'white'} bgColor={Colors.primary} mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
         <Box className="body" w={'full'} height="fit-content" >
             <Flex h={'16rem'} w={'full'} flexDir={'column'} justifyContent={'end'}  p={'1rem'} bgSize={'cover'} bgImage={Liner}>
                 <Text as={'h4'} color={'white'} fontSize={'xl'} fontWeight={'bold'}>
@@ -79,11 +119,12 @@ export const AddElectoralDetails = () =>{
                        Back
                     </Button>
                     <Spacer/>
-                    <Button bg={Colors.primary} w={'fit-content'} borderColor={Colors.primary} px={'1rem'} color={'white'} borderWidth={'1px'}>
+                    <Button onClick={onOpen} bg={Colors.primary} w={'fit-content'} borderColor={Colors.primary} px={'1rem'} color={'white'} borderWidth={'1px'}>
                         Done
                     </Button>
                 </Flex>
             </Box>
         </Box>
+    </>
     )
 }
