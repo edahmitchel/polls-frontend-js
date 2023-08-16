@@ -16,9 +16,9 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: newUserData
             })
-        })
+        }), 
     })
 });
 
-export const { useRegisterUserMutation, useLoginUserMutation } = authApiSlice;
+export const { useRegisterUserMutation, useLoginUserMutation,} = authApiSlice;
  

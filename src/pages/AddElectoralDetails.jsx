@@ -17,14 +17,78 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
- 
+    Grid
 } from "@chakra-ui/react";
+import { useState, useEffect} from "react"
 import { useDisclosure } from "@chakra-ui/react";
 import {Colors} from "../assets/constants/colors.js"
 import Liner from "../assets/images/newLiner.png"
 import { CandidateForm } from "../components/CandidateForm.jsx";
+import { useCreateElectionMutation } from "../assets/app/api/pollsSlice.js";
+import { useSelector}  from "react-redux";
 export const AddElectoralDetails = () =>{
     const {isOpen, onOpen, onClose } = useDisclosure(); 
+    const [candidateCount, setCandidateCount] = useState(2);
+    const [email, setEmail ] = useState("");
+    const [title, setTitle] = useState("");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [options, setOptions] = useState([]);
+    const [emailError, setEmailError] = useState("");
+    const [titleError, setTitleError] = useState("");
+    let [braddish, setBraddish] = useState([1, 2])
+    const emailValidate = (value) =>{
+        // let error;
+        let myRegex = /[a-z+|0-9+]@[a-z]+.com/ig
+        let error = myRegex.test(value);
+        value = value.trim();
+        if(value === "" || value.length <=2){
+            // setUniveralError("Email is required")
+            return "Email is required"
+        }
+        else if(error){
+            return ""
+        }else if(!error){
+            return "Email is invalid"
+        }
+    };
+    const userNameValidate = (value) =>{
+        let error;
+        value = value.trim();
+        if(value === ""){
+            error = "Username is required"
+        }else if(value.length <= 2){
+            error = "Username should be more than 2 characters long"
+        }
+        else{
+            error = "";
+        }
+        return error
+    }
+    const [createElection, result] = useCreateElectionMutation();
+    let candidateValue = useSelector((state) => state.candidate);
+    // console.log(candidateValue);
+    // let [numers, setNumers] = useState(candidateValue);
+    // console.log(numers);
+    const HandleSubmit = async (value) =>{
+        // createElection(value)
+        // console.log(value)
+        let data = {
+            email,
+            title,
+            endDate,
+            startDate,
+            options: value,
+        }
+        // console.log(numers)
+        // data.options = numers
+        console.log(data)
+        // console.log(value)
+        await createElection(data).then((result) =>{
+            console.log(result)
+        })
+        onOpen();
+    }
     return (
         <>
         <Modal isOpen={isOpen} size={'4xl'}  onClose={onClose}>
@@ -61,8 +125,24 @@ export const AddElectoralDetails = () =>{
                     <Text w={'50%'}>Election Enhancement</Text>
                     
                     <Flex w={'50%'} flexDir={'column'}>
+                        
                         <FormLabel>Creators Email</FormLabel>
-                        <Input  _hover={{borderColor: Colors.primary}} _focus={{borderWidth: '1px', outline: 'none'}} borderColor={Colors.primary} w={'90%'} borderRadius={'xl'} type="email" placeholder=""></Input>
+                        <Input  
+                        _hover={{borderColor: Colors.primary}} 
+                        _focus={{borderWidth: '1px', outline: 'none'}} 
+                        borderColor={Colors.primary} w={'90%'} 
+                        borderRadius={'xl'} 
+                        type="email" placeholder=""
+                        onChange={(e) => {
+                            setEmail(e.target.value)
+                            setEmailError(emailValidate(e.target.value))
+                        }}
+                        ></Input>
+                        <FormLabel color="red">
+                            {emailError}
+                        </FormLabel>                      
+                           
+                       
                     </Flex>
                 </Flex>
                 <Flex flexDir={'row'} mt={'2rem'}justifyContent={'space-between'}>
@@ -71,26 +151,40 @@ export const AddElectoralDetails = () =>{
                     <Flex w={'50%'}>
                         <FormControl w={'100%'}>
                             <FormLabel>Election name</FormLabel>
-                            <Input _hover={{borderColor: Colors.primary}} borderColor={Colors.primary}  w={'90%'} borderRadius={'xl'} type="text" placeholder=""></Input>
+                            <Input 
+                            _hover={{borderColor: Colors.primary}} 
+                            borderColor={Colors.primary}  
+                            w={'90%'} 
+                            borderRadius={'xl'} 
+                            type="text" 
+                            placeholder=""
+                            onChange={(e)=>{
+                                setTitle(e.target.value);
+                                setTitleError(userNameValidate(e.target.value))
+                            }}
+                            ></Input>
+                            <FormLabel color="red">
+                                {titleError}
+                            </FormLabel>
                             <Text as={'h3'} mt={'1rem'} color={'gray.300'} fontSize={'1.2rem'} my={'0.4rem'}>Registration Dates and Times</Text>
                             <Flex flexDir={'row'} w={'100%'}>
                                 <Box w={'50%'}>
                                     <FormLabel>Start Date</FormLabel>
-                                    <Input type="date" w={'100%'}  _hover={{borderColor: Colors.primary}} _focus={{borderWidth: '1px', outline: 'none'}} borderColor={Colors.primary}  borderRadius={'xl'} placeholder=""></Input>
+                                    <Input onChange={(e) =>{
+                                        setStartDate(e.target.value)
+                                    }} type="date" w={'100%'}  _hover={{borderColor: Colors.primary}} _focus={{borderWidth: '1px', outline: 'none'}} borderColor={Colors.primary}  borderRadius={'xl'} placeholder=""></Input>
                                 </Box>
                                 <Box w={'50%'}>
                                     <FormLabel>End Date</FormLabel>
-                                    <Input type="date" w={'100%'}  _hover={{borderColor: Colors.primary}} _focus={{borderWidth: '1px', outline: 'none'}} borderColor={Colors.primary} borderRadius={'xl'}  placeholder=""></Input>
+                                    <Input onChange={(e) =>{
+                                        setEndDate(e.target.value);
+                                    }} type="date" w={'100%'}  _hover={{borderColor: Colors.primary}} _focus={{borderWidth: '1px', outline: 'none'}} borderColor={Colors.primary} borderRadius={'xl'}  placeholder=""></Input>
                                 </Box>
                             </Flex>
                             <Text as={'h3'} color={'gray.300'} my={'0.4rem'} mt={'2rem'} fontSize={'1.2rem'} >Election Dates and Times</Text>
                             <Flex flexDir={'row'} w={'100%'}>
                                 <Box w={'50%'}>
-                                    <FormLabel>Start Date</FormLabel>
-                                    <Input type="date" w={'100%'}  _hover={{borderColor: Colors.primary}} _focus={{borderWidth: '1px', outline: 'none'}} borderColor={Colors.primary} borderRadius={'xl'} placeholder=""></Input>
-                                </Box>
-                                <Box w={'50%'}>
-                                    <FormLabel>End Date</FormLabel>
+                                    <FormLabel>Date</FormLabel>
                                     <Input type="date" w={'100%'}  _hover={{borderColor: Colors.primary}} _focus={{borderWidth: '1px', outline: 'none'}} borderColor={Colors.primary} borderRadius={'xl'} placeholder=""></Input>
                                 </Box>
                             </Flex>
@@ -100,17 +194,31 @@ export const AddElectoralDetails = () =>{
                 </Flex>
 
                 <Text as={'h3'} mt={'2rem'}>Candidates/Participants</Text>
-                <Flex flexDir={'row'}  w={'100%'}>
-                    <Box mr={'8rem'} w={'50%'}>
-                        <CandidateForm></CandidateForm>
-                    </Box>
-                    <Spacer w={'4rem'}></Spacer>
-                   <Box w={'50%'}>
-                        <CandidateForm></CandidateForm>
-                   </Box>
-                </Flex>
+                <Grid
+                templateRows={"repeat(2, 50%)"}
+                templateColumns={"repeat(2, 50%)"}
+                gap={7}
+                width={'80%'}
+                // height={'10rem'}
+                mb={"2rem"}
+                bg='white'
+                >
+                    {braddish.map((x, y)=>{
+                        return (
+                            <CandidateForm key={y} par={x}></CandidateForm>
+                        )
+                    })}
+                </Grid>
                 <Flex flexDir={'row'} justifyContent={'center'} alignItems={'center'}  w={'full'} mt={'4rem'}>
-                    <Button bg={'white'} w={'fit-content'} borderColor={Colors.primary} px={'1rem'} color={Colors.primary} borderWidth={'1px'}>
+                    <Button 
+                    bg={'white'} 
+                    w={'fit-content'} 
+                    borderColor={Colors.primary} 
+                    px={'1rem'} 
+                    color={Colors.primary} 
+                    borderWidth={'1px'}
+                    onClick = {() => setBraddish([...braddish, braddish.length])}
+                    >
                         Add Candidates
                     </Button>
                 </Flex>
@@ -119,7 +227,8 @@ export const AddElectoralDetails = () =>{
                        Back
                     </Button>
                     <Spacer/>
-                    <Button onClick={onOpen} bg={Colors.primary} w={'fit-content'} borderColor={Colors.primary} px={'1rem'} color={'white'} borderWidth={'1px'}>
+                    <Button onClick={() => HandleSubmit(candidateValue)}
+                        bg={Colors.primary} w={'fit-content'} borderColor={Colors.primary} px={'1rem'} color={'white'} borderWidth={'1px'}>
                         Done
                     </Button>
                 </Flex>

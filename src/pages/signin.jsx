@@ -50,7 +50,8 @@ export const SignIn = () =>{
     const HandleSubmit = async (value) => {
       let packet = {
         username: value.username.trim(),
-        password: value.password.trim()
+        password: value.password.trim(),
+     
       }
       await addNewUser(packet).then((result) =>{
         console.log(result)
