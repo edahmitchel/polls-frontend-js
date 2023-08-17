@@ -1,70 +1,71 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useLoginUserMutation } from "../assets/app/api/authApiSlice";
-import {Flex, Box, Spacer, Text, Input, Image, Button } from "@chakra-ui/react";
+import { Flex, Box, Spacer, Text, Input, Image, Button } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import Divine from "../assets/images/liner.png";
-import {Link, Navigate} from "react-router-dom";
-import {AiFillEye, AiFillEyeInvisible} from "react-icons/ai"
+import { Link, Navigate } from "react-router-dom";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai"
 import {
-    FormControl,
-    FormLabel,
-    FormErrorMessage,
-    FormHelperText,
-  } from '@chakra-ui/react';
-import { Field, Formik, Form} from "formik";
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+} from '@chakra-ui/react';
+import { Field, Formik, Form } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../assets/app/slices/authSlice";
-export const SignIn = () =>{
-    const [eyeopen, setEyeOpen] = useState(false);
-    const [auth, setAuth ] = useState(false);
-    const[fetchState, setFetchState] = useState('')
-    // let navigate = useNavigate();
-    let dispatch = useDispatch();
-    useEffect(() =>{
-      setAuth(sessionStorage.getItem("pollsAuthState") || null);
-      
-      // return sessionStorage.removeItem("pollsAuthState")
-    }, [])
-    const usernameValidation = (value) =>{
-        let error;
-        if(value === '' || !value){
-            error = "Username is required";
-            // alert(error)
-        }else{
-            error = "";
-            // alert(error)
-        }
-        return error;
+export const SignIn = () => {
+  const [eyeopen, setEyeOpen] = useState(false);
+  const [auth, setAuth] = useState(false);
+  const [fetchState, setFetchState] = useState('')
+  // let navigate = useNavigate();
+  let dispatch = useDispatch();
+  useEffect(() => {
+    setAuth(sessionStorage.getItem("pollsAuthState") || null);
+
+    // return sessionStorage.removeItem("pollsAuthState")
+  }, [])
+  const usernameValidation = (value) => {
+    let error;
+    if (value === '' || !value) {
+      error = "Username is required";
+      // alert(error)
+    } else {
+      error = "";
+      // alert(error)
     }
-    const passwordValidate = (value) =>{
-      let error;
-      if(value < 5){
-        error = "Password is more than five characters";
-      }else if(!value){
-        error = "Password is required";
+    return error;
+  }
+  const passwordValidate = (value) => {
+    let error;
+    if (value < 5) {
+      error = "Password is more than five characters";
+    } else if (!value) {
+      error = "Password is required";
+    }
+    return error;
+  }
+  const [addNewUser, result] = useLoginUserMutation();
+  const HandleSubmit = async (value) => {
+    let packet = {
+      username: value.username.trim(),
+      password: value.password.trim(),
+
+    }
+    await addNewUser(packet).then((result) => {
+      console.log(result)
+      if (result?.data?.message == "Login successful") {
+        sessionStorage.setItem("pollsAuthState", JSON.stringify(true));
+        localStorage.setItem("userInfo", JSON.stringify(result))
+        setAuth(JSON.parse(sessionStorage.getItem("pollsAuthState")));
+        dispatch(login(result));
       }
-      return error;
-    }
-    const [addNewUser, result] = useLoginUserMutation();
-    const HandleSubmit = async (value) => {
-      let packet = {
-        username: value.username.trim(),
-        password: value.password.trim(),
-     
-      }
-      await addNewUser(packet).then((result) =>{
-        console.log(result)
-        if(result?.data?.message == "Login successful"){
-          sessionStorage.setItem("pollsAuthState", JSON.stringify(true));
-           setAuth(JSON.parse(sessionStorage.getItem("pollsAuthState")));
-           dispatch(login(packet));
-        }
-      });
-    }
-    if(auth){
-        return  <Navigate replace to="/dashboard"/> 
-    }else{
+    });
+  }
+  if (auth) {
+    return <Navigate replace to="/dashboard" />
+  } else {
     return (
       <>
         <div className="body">
@@ -105,7 +106,7 @@ export const SignIn = () =>{
               >
                 {(props) => (
                   <Form style={{ width: "100%" }}>
-                     {fetchState !== '' &&  <Text color={'red'} border={"1px"} w={'full'} borderColor={"red"} p={'0.5rem'}>{fetchState}</Text>}
+                    {fetchState !== '' && <Text color={'red'} border={"1px"} w={'full'} borderColor={"red"} p={'0.5rem'}>{fetchState}</Text>}
                     <Field name="username" validate={usernameValidation}>
                       {(props) => (
                         <FormControl
@@ -126,14 +127,14 @@ export const SignIn = () =>{
                             w={"100%"}
                             placeholder={"Enter your Username"}
                           ></Input>
-                         
-                            <FormErrorMessage w={"full"} textColor={"red"}>
-                              {props.form.errors.username}
-                            </FormErrorMessage>
+
+                          <FormErrorMessage w={"full"} textColor={"red"}>
+                            {props.form.errors.username}
+                          </FormErrorMessage>
                         </FormControl>
                       )}
                     </Field>
-                    <Field name="password" validate = {passwordValidate}>
+                    <Field name="password" validate={passwordValidate}>
                       {(props) => (
                         <FormControl isInvalid={props.form.errors.password && props.form.touched.password}>
                           <FormLabel
@@ -147,7 +148,7 @@ export const SignIn = () =>{
 
                           <Flex alignItems="center" justifyContent="right">
                             <Input
-                            {...props.field}
+                              {...props.field}
                               zIndex="0"
                               position="absolute"
                               type={eyeopen ? "text" : "password"}
@@ -183,29 +184,29 @@ export const SignIn = () =>{
                       )}
                     </Field>
                     <Text
-                     w="100%"
-                    color={"gray.400"}
-                    my="1rem"
-                    textAlign="right"
-                    fontSize="14px"
+                      w="100%"
+                      color={"gray.400"}
+                      my="1rem"
+                      textAlign="right"
+                      fontSize="14px"
                     >
-                        <Link>Forgot Password?</Link>
+                      <Link>Forgot Password?</Link>
                     </Text>
                     <Button
-                        _active={{ bg: "#0C8B28", color: "white" }}
-                        _hover={{
-                            bg: "white",
-                            color: "#0C8B28",
-                            borderColor: "#0C8B28",
-                            borderWidth: "1px",
-                        }}
-                        w="100%"
-                        bg="#0C8B28"
-                        color="white"
-                        // h={"4rem"}
-                        type="submit"
+                      _active={{ bg: "#0C8B28", color: "white" }}
+                      _hover={{
+                        bg: "white",
+                        color: "#0C8B28",
+                        borderColor: "#0C8B28",
+                        borderWidth: "1px",
+                      }}
+                      w="100%"
+                      bg="#0C8B28"
+                      color="white"
+                      // h={"4rem"}
+                      type="submit"
                     >
-                        Log In
+                      Log In
                     </Button>
                   </Form>
                 )}
