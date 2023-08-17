@@ -66,7 +66,7 @@ export const Dashboard = () => {
                                 Elections
                             </Button>
                         </Flex>
-                        {onActive ? <Elections></Elections> : <AllElections></AllElections>}
+                        {onActive ? <Elections polls={polls}></Elections> : <AllElections polls={polls}></AllElections>}
                     </Box>
                 </Box>
                 <Box as="aside" w={"40%"} m={"2rem"}>
