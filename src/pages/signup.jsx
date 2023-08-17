@@ -73,7 +73,7 @@ export const SignUp = () =>{
           if(result.error){
             setFetchState("Poor network connectivity, check your internet settings!")
           }
-        })
+        });
     }
     if(auth){
       return <Navigate replace to={"/dashboard"}/>

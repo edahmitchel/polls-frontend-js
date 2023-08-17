@@ -17,14 +17,16 @@ import {
     FormHelperText,
     Input
   } from '@chakra-ui/react';
-  import { Field, Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
+import { Ballot } from './Ballot';
 import { Colors } from "../assets/constants/colors";
 import OLiner from "../assets/images/oldLineer.png";
-import { useAsyncValue } from 'react-router-dom';
+// import { useAsyncValue } from 'react-router-dom';
 // import Liner from "../assets/images/newLiner.png"m1i9zzzzz
 export const Elections = (props) =>{
     const {isOpen, onOpen, onClose } = useDisclosure();
     const [regState, setRegState] = useState(false);
+    const [registered, setRegistered] = useState(false);
     const userNameValidate = (value) =>{
         let error;
         value = value.trim();
@@ -59,7 +61,7 @@ export const Elections = (props) =>{
         <ModalContent>
             <Flex h={'10rem'} dir="column" alignItems={'end'} bgSize={'cover'} bgImage={OLiner} p="1rem">
                 <Text textTransform={'uppercase'} fontSize={"3xl"} color={'white'} fontWeight="bold">
-                    creators dashboard
+                    Election
                 </Text>
             </Flex>
           <ModalHeader>
@@ -69,6 +71,7 @@ export const Elections = (props) =>{
           {/* <ModalCloseButton /> */}
           <ModalBody>
            <Flex flexDir={"column"} alignItems={'center'} >
+                {registered && <Ballot></Ballot>}
                 { regState &&
                 <Formik
                 initialValues={{
@@ -179,9 +182,8 @@ export const Elections = (props) =>{
                 </Flex>
                
             </Flex>
-            
-          </ModalBody>
 
+          </ModalBody>
           <ModalFooter>
             {/* <Button color={'white'} bgColor={Colors.primary} mr={3} onClick={onClose}>
               Close
