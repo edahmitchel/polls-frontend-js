@@ -200,7 +200,7 @@ export const Elections = ({ polls }) => {
                         <Text>Elections</Text>
                         <Spacer></Spacer>
                         <Box mt={"20"} w={"50%"}>
-                            <Text fontSize={"20px"} fontWeight={"bold"}>{poll?.title}FYB PRESIDENTS ELECTION</Text>
+                            <Text fontSize={"20px"} fontWeight={"bold"}>{poll?.title}</Text>
                             <Text fontSize={"16px"}>ID : {poll._id} </Text>
 
                         </Box>
@@ -208,18 +208,7 @@ export const Elections = ({ polls }) => {
                     </Flex>
                 </Box>)) : ""
             }
-            <Box p={"0.8rem"} w={"full"} h={"fit"} >
-                <Flex direction={"column"} onClick={onOpen} _hover={{ cursor: 'pointer' }} w={"25rem"} rounded={"lg"} p={"3"} h={"fit"} bgColor={Colors.pinkish}>
-                    <Text>Elections</Text>
-                    <Spacer></Spacer>
-                    <Box mt={"20"} w={"50%"}>
-                        <Text fontSize={"20px"} fontWeight={"bold"}>no elections currently available rigth now</Text>
-                        {/* <Text fontSize={"16px"}>ID : 466354MN </Text> */}
 
-                    </Box>
-                    <Text mt={"4"} lineHeight={"1rem"}>Register now election starts soon..........</Text>
-                </Flex>
-            </Box>
         </>
     )
 }
