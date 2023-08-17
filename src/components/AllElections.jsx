@@ -28,6 +28,7 @@ export const AllElections = ({ polls }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [regState, setRegState] = useState(false);
     const [registered, setRegistered] = useState(false);
+    const [selectedPoll, setSelectedPoll] = useState(null)
     const userNameValidate = (value) => {
         let error;
         value = value.trim();

@@ -25,9 +25,10 @@ import OLiner from "../assets/images/oldLineer.png";
 // import { useAsyncValue } from 'react-router-dom';
 // import Liner from "../assets/images/newLiner.png"m1i9zzzzz
 export const Elections = ({ polls }) => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [isOpen, setIsOpen] = useState(false);
     const [regState, setRegState] = useState(false);
     const [registered, setRegistered] = useState(false);
+    const [selectedPoll, setSelectedPoll] = useState(null)
     const userNameValidate = (value) => {
         let error;
         value = value.trim();
@@ -57,7 +58,7 @@ export const Elections = ({ polls }) => {
     }
     return (
         <>
-            <Modal isOpen={isOpen} size={'4xl'} onClose={onClose}>
+            <Modal isOpen={isOpen} size={'4xl'} >
                 <ModalOverlay />
                 <ModalContent>
                     <Flex h={'10rem'} dir="column" alignItems={'end'} bgSize={'cover'} bgImage={OLiner} p="1rem">
@@ -66,8 +67,8 @@ export const Elections = ({ polls }) => {
                         </Text>
                     </Flex>
                     <ModalHeader>
-                        <Text fontSize={"20px"} fontWeight={"bold"}>FYB PRESIDENTS ELECTION</Text>
-                        <Text fontSize={"16px"}>ID : 466354MN </Text>
+                        <Text fontSize={"20px"} fontWeight={"bold"}>{selectedPoll.title}</Text>
+                        <Text fontSize={"16px"}>ID : {selectedPoll._id} </Text>
                     </ModalHeader>
                     {/* <ModalCloseButton /> */}
                     <ModalBody>
@@ -196,7 +197,10 @@ export const Elections = ({ polls }) => {
                 </ModalContent>
             </Modal>{
                 polls && polls.length > 0 ? polls.map(poll => (<Box p={"0.8rem"} w={"full"} h={"fit"} >
-                    <Flex direction={"column"} onClick={onOpen} _hover={{ cursor: 'pointer' }} w={"25rem"} rounded={"lg"} p={"3"} h={"fit"} bgColor={Colors.pinkish}>
+                    <Flex direction={"column"} onClick={() => {
+                        setSelectedPoll(poll)
+                        setIsOpen(true)
+                    }} _hover={{ cursor: 'pointer' }} w={"25rem"} rounded={"lg"} p={"3"} h={"fit"} bgColor={Colors.pinkish}>
                         <Text>Elections</Text>
                         <Spacer></Spacer>
                         <Box mt={"20"} w={"50%"}>
