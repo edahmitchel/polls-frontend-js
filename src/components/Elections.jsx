@@ -22,7 +22,8 @@ import { Ballot } from './Ballot';
 import { Colors } from "../assets/constants/colors";
 import OLiner from "../assets/images/oldLineer.png";
 // import { useAsyncValue } from 'react-router-dom';
-// import Liner from "../assets/images/newLiner.png"m1i9zzzzz
+// import Liner from "../assets/images/newLiner.png"m1
+// import { useGetPollsQuery } from '../assets/app/api/pollsSlice';
 export const Elections = (props) =>{
     const {isOpen, onOpen, onClose } = useDisclosure();
     const [regState, setRegState] = useState(false);
@@ -54,9 +55,11 @@ export const Elections = (props) =>{
             return "Email is invalid"
         }
     }
+   
+    // console.log(data);
      return(
         <>
-         <Modal isOpen={isOpen} size={'4xl'}  onClose={onClose}>
+        <Modal isOpen={isOpen} size={'4xl'}  onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
             <Flex h={'10rem'} dir="column" alignItems={'end'} bgSize={'cover'} bgImage={OLiner} p="1rem">
@@ -65,8 +68,8 @@ export const Elections = (props) =>{
                 </Text>
             </Flex>
           <ModalHeader>
-            <Text fontSize={"20px"} fontWeight={"bold"}>FYB PRESIDENTS ELECTION</Text>
-            <Text fontSize={"16px"}>ID : 466354MN </Text>
+            <Text fontSize={"20px"} fontWeight={"bold"}>{props.title}</Text>
+            <Text fontSize={"16px"}>ID : {props.id}</Text>
           </ModalHeader>
           {/* <ModalCloseButton /> */}
           <ModalBody>
@@ -195,12 +198,12 @@ export const Elections = (props) =>{
         </ModalContent>
       </Modal>
         <Box p={"0.8rem"} w={"full"} h={"fit"} >
-            <Flex direction={"column"} onClick={onOpen} _hover={{cursor: 'pointer'}} w={"25rem"} rounded={"lg"} p={"3"} h={"fit"} bgColor={Colors.pinkish}>
+            <Flex direction={"column"} onClick={onOpen} _hover={{cursor: 'pointer'}} w={"100%"} rounded={"lg"} p={"3"} h={"fit"} bgColor={Colors.pinkish}>
                 <Text>Elections</Text>
                 <Spacer></Spacer>
                 <Box mt={"20"} w={"50%"}>
-                    <Text fontSize={"20px"} fontWeight={"bold"}>FYB PRESIDENTS ELECTION</Text>
-                    <Text fontSize={"16px"}>ID : 466354MN </Text>
+                    <Text fontSize={"20px"} fontWeight={"bold"}>{props.title}</Text>
+                    <Text fontSize={"16px"}>ID : {props.id} </Text>
                     
                 </Box>
                 <Text mt={"4"} lineHeight={"1rem"}>Register now election starts soon..........</Text>

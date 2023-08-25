@@ -19,6 +19,8 @@ import { Elections } from "../components/Elections";
 import { AllElections } from "../components/AllElections";
 import { MyButton } from "../components/minorComponents/myButton";
 import { BlogPost } from "../components/Blogpost";
+import { ElectionsMap } from "../components/electionsMap";
+// import { useGetPollsQuery } from "../assets/app/api/pollsSlice";
 
 export const Dashboard = () =>{
     const [onActive, setOnActive] = useState(true);
@@ -26,7 +28,8 @@ export const Dashboard = () =>{
     const unSettle = () =>{
         setOnActive(!onActive)
     };
-   
+    // const {data, isLoading, error} = useGetPolls();
+    // const {data} = useGetPollsQuery();
     if(!authState){
         return <Navigate replace to={"/"}/>
     }else{
@@ -44,7 +47,7 @@ export const Dashboard = () =>{
                                 Elections
                             </Button>
                         </Flex>
-                        {onActive ? <Elections></Elections> : <AllElections></AllElections>}
+                        {onActive ? <ElectionsMap></ElectionsMap> : <AllElections></AllElections>}
                     </Box>
                 </Box>
                 <Box as="aside" w={"40%"} m={"2rem"}>
