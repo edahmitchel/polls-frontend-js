@@ -78,4 +78,5 @@ const registerForPoll = async (email) => {
   }
 };
 
-export default axiosCalls = { voteOnPoll, getAllPolls, getSinglePoll };
+const axiosCalls = { voteOnPoll, getAllPolls, getSinglePoll };
+export default axiosCalls;
