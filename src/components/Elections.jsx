@@ -22,6 +22,7 @@ import { Field, Form, Formik } from "formik";
 import { Ballot } from './Ballot';
 import { Colors } from "../assets/constants/colors";
 import OLiner from "../assets/images/oldLineer.png";
+import axiosCalls from '../axiosCalls';
 // import { useAsyncValue } from 'react-router-dom';
 // import Liner from "../assets/images/newLiner.png"m1i9zzzzz
 export const Elections = ({ polls }) => {
@@ -56,6 +57,24 @@ export const Elections = ({ polls }) => {
             return "Email is invalid"
         }
     }
+    const handleSubmit = async (email) => {
+
+
+        try {
+            const response = await axios.post(`https://pollsapp-36x1.onrender.com/api/polls/register/${selectedPoll._id}`, { email });
+            const { registrationCode: code, poll } = response.data;
+
+
+            console.log(response);
+        } catch (error) {
+            if (error.response && error.response.data && error.response.data.error) {
+                setErrorMessage(error.response.data.error);
+            } else {
+                setErrorMessage('Failed to register for poll');
+            }
+        }
+    };
+
     return (
         <>
             <Modal isOpen={isOpen} size={'4xl'} >
@@ -168,6 +187,7 @@ export const Elections = ({ polls }) => {
                             }
                             <Button onClick={regState ? () => {
                                 return console.log('aarg')
+
                             }
                                 :
                                 () => setRegState(!regState)
