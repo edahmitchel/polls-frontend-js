@@ -29,7 +29,8 @@ export const Elections = ({ polls }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [regState, setRegState] = useState(false);
     const [registered, setRegistered] = useState(false);
-    const [selectedPoll, setSelectedPoll] = useState(null)
+    const [selectedPoll, setSelectedPoll] = useState(null);
+    console.log(polls)
     const userNameValidate = (value) => {
         let error;
         value = value.trim();
@@ -61,10 +62,8 @@ export const Elections = ({ polls }) => {
 
 
         try {
-            const response = await axios.post(`https://pollsapp-36x1.onrender.com/api/polls/register/${selectedPoll._id}`, { email });
+            const response = await axios.post(`https://pollsapp-36x1.onrender.com/api/polls/register/${selectedPoll._id}/`, { email });
             const { registrationCode: code, poll } = response.data;
-
-
             console.log(response);
         } catch (error) {
             if (error.response && error.response.data && error.response.data.error) {
@@ -86,8 +85,8 @@ export const Elections = ({ polls }) => {
                         </Text>
                     </Flex>
                     <ModalHeader>
-                        <Text fontSize={"20px"} fontWeight={"bold"}>{selectedPoll.title}</Text>
-                        <Text fontSize={"16px"}>ID : {selectedPoll._id} </Text>
+                        <Text fontSize={"20px"} fontWeight={"bold"}>Title</Text>
+                        <Text fontSize={"16px"}>ID : id</Text>
                     </ModalHeader>
                     {/* <ModalCloseButton /> */}
                     <ModalBody>
@@ -215,22 +214,28 @@ export const Elections = ({ polls }) => {
                         </Text>
                     </ModalFooter>
                 </ModalContent>
-            </Modal>{
-                polls && polls.length > 0 ? polls.map(poll => (<Box p={"0.8rem"} w={"full"} h={"fit"} >
-                    <Flex direction={"column"} onClick={() => {
-                        setSelectedPoll(poll)
-                        setIsOpen(true)
-                    }} _hover={{ cursor: 'pointer' }} w={"25rem"} rounded={"lg"} p={"3"} h={"fit"} bgColor={Colors.pinkish}>
-                        <Text>Elections</Text>
-                        <Spacer></Spacer>
-                        <Box mt={"20"} w={"50%"}>
-                            <Text fontSize={"20px"} fontWeight={"bold"}>{poll?.title}</Text>
-                            <Text fontSize={"16px"}>ID : {poll._id} </Text>
+            </Modal>
+            {
+                polls?.length > 0 ? polls.map((poll, y) => {
+                    return (
+                        <Box key={y} p={"0.8rem"} w={"full"} h={"fit"} >
+                            <Flex direction={"column"} onClick={() => {
+                                setSelectedPoll(poll)
+                                setIsOpen(true)
+                            }} _hover={{ cursor: 'pointer' }} w={"25rem"} rounded={"lg"} p={"3"} h={"fit"} bgColor={Colors.pinkish}>
+                                <Text>Elections</Text>
+                                <Spacer></Spacer>
+                                <Box mt={"20"} w={"50%"}>
+                                    <Text fontSize={"20px"} fontWeight={"bold"}>{poll?.title}</Text>
+                                    <Text fontSize={"16px"}>ID : {poll._id} </Text>
 
+                                </Box>
+                                <Text mt={"4"} lineHeight={"1rem"}>Register now election starts soon..........</Text>
+                            </Flex>
                         </Box>
-                        <Text mt={"4"} lineHeight={"1rem"}>Register now election starts soon..........</Text>
-                    </Flex>
-                </Box>)) : ""
+                    )
+                }) : 
+                ""
             }
 
         </>

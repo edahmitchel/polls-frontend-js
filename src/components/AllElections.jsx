@@ -23,6 +23,7 @@ import { Ballot } from './Ballot';
 import { Colors } from "../assets/constants/colors";
 import OLiner from "../assets/images/oldLineer.png";
 export const AllElections = ({ polls }) => {
+    console.log(polls)
     const userData = JSON.parse(localStorage.getItem("userInfo"))
     console.log({ userData });
     const { isOpen, onOpen, onClose } = useDisclosure();
