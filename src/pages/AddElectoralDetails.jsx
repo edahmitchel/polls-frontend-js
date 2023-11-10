@@ -67,7 +67,7 @@ export const AddElectoralDetails = () => {
         }
         return error
     }
-    const [createElection, result] = useCreateElectionMutation();
+    const [createElection,] = useCreateElectionMutation();
     let candidateValue = useSelector((state) => state.candidate);
     const userData = JSON.parse(localStorage.getItem("userInfo"))
     console.log({ userData });

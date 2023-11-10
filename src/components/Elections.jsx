@@ -24,9 +24,10 @@ import { Colors } from "../assets/constants/colors";
 import OLiner from "../assets/images/oldLineer.png";
 import axiosCalls from '../axiosCalls';
 // import { useAsyncValue } from 'react-router-dom';
-// import Liner from "../assets/images/newLiner.png"m1i9zzzzz
-export const Elections = ({ polls }) => {
-    const [isOpen, setIsOpen] = useState(false);
+// import Liner from "../assets/images/newLiner.png"m1
+// import { useGetPollsQuery } from '../assets/app/api/pollsSlice';
+export const Elections = (props) =>{
+    const {isOpen, onOpen, onClose } = useDisclosure();
     const [regState, setRegState] = useState(false);
     const [registered, setRegistered] = useState(false);
     const [selectedPoll, setSelectedPoll] = useState(null);
@@ -58,143 +59,128 @@ export const Elections = ({ polls }) => {
             return "Email is invalid"
         }
     }
-    const handleSubmit = async (email) => {
-
-
-        try {
-            const response = await axios.post(`https://pollsapp-36x1.onrender.com/api/polls/register/${selectedPoll._id}/`, { email });
-            const { registrationCode: code, poll } = response.data;
-            console.log(response);
-        } catch (error) {
-            if (error.response && error.response.data && error.response.data.error) {
-                setErrorMessage(error.response.data.error);
-            } else {
-                setErrorMessage('Failed to register for poll');
-            }
-        }
-    };
-
-    return (
+   
+    // console.log(data);
+     return(
         <>
-            <Modal isOpen={isOpen} size={'4xl'} >
-                <ModalOverlay />
-                <ModalContent>
-                    <Flex h={'10rem'} dir="column" alignItems={'end'} bgSize={'cover'} bgImage={OLiner} p="1rem">
-                        <Text textTransform={'uppercase'} fontSize={"3xl"} color={'white'} fontWeight="bold">
-                            Election
-                        </Text>
-                    </Flex>
-                    <ModalHeader>
-                        <Text fontSize={"20px"} fontWeight={"bold"}>Title</Text>
-                        <Text fontSize={"16px"}>ID : id</Text>
-                    </ModalHeader>
-                    {/* <ModalCloseButton /> */}
-                    <ModalBody>
-                        <Flex flexDir={"column"} alignItems={'center'} >
-                            {registered && <Ballot></Ballot>}
-                            {regState &&
-                                <Formik
-                                    initialValues={{
-                                        email: "",
-                                        username: '',
-                                        password: ""
-                                    }}
-                                    validateOnChange={true}
-                                >
-                                    {(props) => (
-                                        <Form
-                                            style={{ width: '50%', marginBottom: "1rem" }}
+        <Modal isOpen={isOpen} size={'4xl'}  onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+            <Flex h={'10rem'} dir="column" alignItems={'end'} bgSize={'cover'} bgImage={OLiner} p="1rem">
+                <Text textTransform={'uppercase'} fontSize={"3xl"} color={'white'} fontWeight="bold">
+                    Election
+                </Text>
+            </Flex>
+          <ModalHeader>
+            <Text fontSize={"20px"} fontWeight={"bold"}>{props.title}</Text>
+            <Text fontSize={"16px"}>ID : {props.id}</Text>
+          </ModalHeader>
+          {/* <ModalCloseButton /> */}
+          <ModalBody>
+           <Flex flexDir={"column"} alignItems={'center'} >
+                {registered && <Ballot></Ballot>}
+                { regState &&
+                <Formik
+                initialValues={{
+                    email: "",
+                    username: '',
+                    password: ""
+                }}
+                validateOnChange={true}
+                >
+                    {(props) => (
+                        <Form
+                        style={{width: '50%', marginBottom: "1rem"}}
+                        >
+                            <Field name="email" validate={emailValidate}>
+                                {(props) =>(
+                                    <FormControl isInvalid={
+                                        props.form.errors.email && props.form.touched.email
+                                    }>
+                                        <FormLabel
+                                            ml={"0.3rem"}
+                                            fontWeight={"semibold"}
+                                            fontSize={"16px"}
+                                         >
+                                            Email
+                                        </FormLabel>
+                                        <Input
+                                        {...props.field}
+                                        autoComplete={"true"}
+                                        type="email"
+                                        placeholder="gethan@gmail.com"
                                         >
-                                            <Field name="email" validate={emailValidate}>
-                                                {(props) => (
-                                                    <FormControl isInvalid={
-                                                        props.form.errors.email && props.form.touched.email
-                                                    }>
-                                                        <FormLabel
-                                                            ml={"0.3rem"}
-                                                            fontWeight={"semibold"}
-                                                            fontSize={"16px"}
-                                                        >
-                                                            Email
-                                                        </FormLabel>
-                                                        <Input
-                                                            {...props.field}
-                                                            autoComplete={"true"}
-                                                            type="email"
-                                                            placeholder="gethan@gmail.com"
-                                                        >
-                                                        </Input>
-                                                        <FormErrorMessage w={"full"} textColor={"red"}>
-                                                            {props.form.errors.email}
-                                                        </FormErrorMessage>
-                                                    </FormControl>
-                                                )}
-                                            </Field>
-                                            <Field
-                                                name="username"
-                                                validate={userNameValidate}
-                                            >
-                                                {(props) => (
-                                                    <FormControl
-                                                        isInvalid={props.form.errors.username && props.form.touched.username}
-                                                    >
-                                                        <FormLabel
-                                                            ml={'0.3rem'}
-                                                            fontWeight={'semibold'}
-                                                            fontSize={'16px'}
-                                                        >
-                                                            Username
-                                                        </FormLabel>
-                                                        <Input
-                                                            {...props.field}
-                                                            type="text"
-                                                            placeholder="Gethan"
-                                                            autoComplete={"false"}
-                                                        >
-                                                        </Input>
-                                                        <FormErrorMessage w="full" textColor="red">
-                                                            {props.form.errors.username}
-                                                        </FormErrorMessage>
-                                                    </FormControl>
-                                                )}
-                                            </Field>
-                                            <Field name="password">
-                                                {(props) => (
-                                                    <FormControl
-                                                        isInvalid={props.form.errors.password && props.form.touched.password}
-                                                    >
-                                                        <FormLabel
-                                                            ml={'0.3rem'}
-                                                            fontWeight={'semibold'}
-                                                            fontSize={'16px'}
-                                                        >
-                                                            Password
-                                                        </FormLabel>
-                                                        <Input
-                                                            {...props.field}
-                                                            type="password"
-                                                            placeholder="--------"
-                                                            autoComplete={"false"}
-                                                        >
-                                                        </Input>
-                                                    </FormControl>
-                                                )}
-                                            </Field>
-                                        </Form>
-                                    )}
-                                </Formik>
-                            }
-                            <Button onClick={regState ? () => {
-                                return console.log('aarg')
-
-                            }
-                                :
-                                () => setRegState(!regState)
-                            } width={'15rem'} color={'white'} bgColor={Colors.primary}>
-                                Register for this election
-                            </Button>
-                            <Flex flexDir={'row'} alignItems={'center'} justifyContent={'center'}>
-                                <Box bgColor={'limegreen'} w='10px' h={'10px'} rounded={'full'}>
+                                        </Input>
+                                        <FormErrorMessage w={"full"} textColor={"red"}>
+                                            {props.form.errors.email}
+                                        </FormErrorMessage>
+                                    </FormControl>
+                                )}
+                            </Field>
+                            <Field 
+                            name="username"
+                            validate={userNameValidate}
+                            >
+                                {(props) =>(
+                                    <FormControl 
+                                    isInvalid = {props.form.errors.username && props.form.touched.username}
+                                    >
+                                        <FormLabel
+                                        ml={'0.3rem'}
+                                        fontWeight={'semibold'}
+                                        fontSize={'16px'}
+                                        >
+                                            Username
+                                        </FormLabel>
+                                        <Input
+                                        {...props.field}
+                                        type="text"
+                                        placeholder="Gethan"
+                                        autoComplete={"false"}
+                                        >
+                                        </Input>
+                                        <FormErrorMessage w="full" textColor="red">
+                                            {props.form.errors.username}
+                                        </FormErrorMessage>
+                                    </FormControl>
+                                )}
+                            </Field>
+                            <Field name="password">
+                                {(props)=>(
+                                    <FormControl
+                                    isInvalid={props.form.errors.password && props.form.touched.password}
+                                    >
+                                        <FormLabel
+                                        ml={'0.3rem'}
+                                        fontWeight={'semibold'}
+                                        fontSize={'16px'}
+                                        >
+                                            Password
+                                        </FormLabel>
+                                        <Input
+                                        {...props.field}
+                                        type="password"
+                                        placeholder="--------"
+                                        autoComplete={"false"}
+                                        >
+                                        </Input>
+                                    </FormControl>
+                                )}
+                            </Field>
+                        </Form>
+                    )}
+                </Formik>
+                }
+                <Button onClick={ regState ? () =>{
+                        return console.log('aarg')
+                        }
+                    :
+                () => setRegState(!regState)
+                } width={'15rem'} color={'white'} bgColor={Colors.primary}>
+                    Register for this election
+                </Button>
+                <Flex flexDir={'row'} alignItems={'center'} justifyContent={'center'}>
+                    <Box bgColor={'limegreen'} w='10px' h={'10px'} rounded={'full'}> 
 
                                 </Box>
                                 <Text fontWeight={'light'} color={'green.300'} mt={'2px'} fontSize={'md'}>
@@ -209,35 +195,24 @@ export const Elections = ({ polls }) => {
                         {/* <Button color={'white'} bgColor={Colors.primary} mr={3} onClick={onClose}>
               Close
             </Button> */}
-                        <Text w={'full'} mt={"10rem"} textAlign={'center'} textTransform={'uppercase'} color={"limegreen"}>
-                            Note: no voting if you are not registered
-                        </Text>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
-            {
-                polls?.length > 0 ? polls.map((poll, y) => {
-                    return (
-                        <Box key={y} p={"0.8rem"} w={"full"} h={"fit"} >
-                            <Flex direction={"column"} onClick={() => {
-                                setSelectedPoll(poll)
-                                setIsOpen(true)
-                            }} _hover={{ cursor: 'pointer' }} w={"25rem"} rounded={"lg"} p={"3"} h={"fit"} bgColor={Colors.pinkish}>
-                                <Text>Elections</Text>
-                                <Spacer></Spacer>
-                                <Box mt={"20"} w={"50%"}>
-                                    <Text fontSize={"20px"} fontWeight={"bold"}>{poll?.title}</Text>
-                                    <Text fontSize={"16px"}>ID : {poll._id} </Text>
-
-                                </Box>
-                                <Text mt={"4"} lineHeight={"1rem"}>Register now election starts soon..........</Text>
-                            </Flex>
-                        </Box>
-                    )
-                }) : 
-                ""
-            }
-
+            <Text w={'full'} mt={"10rem"} textAlign={'center'} textTransform={'uppercase'} color={"limegreen"}>
+                Note: no voting if you are not registered
+            </Text>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+        <Box p={"0.8rem"} w={"full"} h={"fit"} >
+            <Flex direction={"column"} onClick={onOpen} _hover={{cursor: 'pointer'}} w={"100%"} rounded={"lg"} p={"3"} h={"fit"} bgColor={Colors.pinkish}>
+                <Text>Elections</Text>
+                <Spacer></Spacer>
+                <Box mt={"20"} w={"50%"}>
+                    <Text fontSize={"20px"} fontWeight={"bold"}>{props.title}</Text>
+                    <Text fontSize={"16px"}>ID : {props.id} </Text>
+                    
+                </Box>
+                <Text mt={"4"} lineHeight={"1rem"}>Register now election starts soon..........</Text>
+            </Flex>
+        </Box>
         </>
     )
 }

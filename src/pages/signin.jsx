@@ -15,57 +15,58 @@ import {
 import { Field, Formik, Form } from "formik";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../assets/app/slices/authSlice";
-export const SignIn = () => {
-  const [eyeopen, setEyeOpen] = useState(false);
-  const [auth, setAuth] = useState(false);
-  const [fetchState, setFetchState] = useState('')
-  // let navigate = useNavigate();
-  let dispatch = useDispatch();
-  useEffect(() => {
-    setAuth(sessionStorage.getItem("pollsAuthState") || null);
-
-    // return sessionStorage.removeItem("pollsAuthState")
-  }, [])
-  const usernameValidation = (value) => {
-    let error;
-    if (value === '' || !value) {
-      error = "Username is required";
-      // alert(error)
-    } else {
-      error = "";
-      // alert(error)
+export const SignIn = () =>{
+    const [eyeopen, setEyeOpen] = useState(false);
+    const [auth, setAuth ] = useState(false);
+    const[fetchState, setFetchState] = useState('');
+    const [clicked, setClickedState] = useState(true);
+    // let navigate = useNavigate();
+    let dispatch = useDispatch();
+    useEffect(() =>{
+      setAuth(sessionStorage.getItem("pollsAuthState") || null);
+      
+      // return sessionStorage.removeItem("pollsAuthState")
+    }, [])
+    const usernameValidation = (value) =>{
+        let error;
+        if(value === '' || !value){
+            error = "Username is required";
+            // alert(error)
+        }else{
+            error = "";
+            // alert(error)
+        }
+        return error;
     }
-    return error;
-  }
-  const passwordValidate = (value) => {
-    let error;
-    if (value < 5) {
-      error = "Password is more than five characters";
-    } else if (!value) {
-      error = "Password is required";
-    }
-    return error;
-  }
-  const [addNewUser, result] = useLoginUserMutation();
-  const HandleSubmit = async (value) => {
-    let packet = {
-      username: value.username.trim(),
-      password: value.password.trim(),
-
-    }
-    await addNewUser(packet).then((result) => {
-      console.log(result)
-      if (result?.data?.message == "Login successful") {
-        sessionStorage.setItem("pollsAuthState", JSON.stringify(true));
-        localStorage.setItem("userInfo", JSON.stringify(result))
-        setAuth(JSON.parse(sessionStorage.getItem("pollsAuthState")));
-        dispatch(login(result));
+    const passwordValidate = (value) =>{
+      let error;
+      if(value < 5){
+        error = "Password is more than five characters";
+      }else if(!value){
+        error = "Password is required";
       }
-    });
-  }
-  if (auth) {
-    return <Navigate replace to="/dashboard" />
-  } else {
+      return error;
+    }
+    const [addNewUser, {isLoading, data}] = useLoginUserMutation();
+    const HandleSubmit = async (value) => {
+      let packet = {
+        username: value.username.trim(),
+        password: value.password.trim(),
+     
+      }
+      await addNewUser(packet).then((result) =>{
+        // console.log(result)
+        if(data?.message == "Login successful"){
+          sessionStorage.setItem("pollsAuthState", JSON.stringify(true));
+           setAuth(JSON.parse(sessionStorage.getItem("pollsAuthState")));
+           dispatch(login(packet));
+        }
+      });
+    }
+    // console.log(result.isLoading)
+    if(auth){
+        return  <Navigate replace to="/dashboard"/> 
+    }else{
     return (
       <>
         <div className="body">
@@ -192,21 +193,39 @@ export const SignIn = () => {
                     >
                       <Link>Forgot Password?</Link>
                     </Text>
-                    <Button
-                      _active={{ bg: "#0C8B28", color: "white" }}
-                      _hover={{
-                        bg: "white",
-                        color: "#0C8B28",
-                        borderColor: "#0C8B28",
-                        borderWidth: "1px",
-                      }}
-                      w="100%"
-                      bg="#0C8B28"
-                      color="white"
-                      // h={"4rem"}
-                      type="submit"
+                    {isLoading ? <Button
+                        _active={{ bg: "#0C8B28", color: "white" }}
+                        _hover={{
+                            bg: "grey",
+                            color: "white",
+                            // borderColor: "#0C8B28",
+                            borderWidth: "1px",
+                        }}
+                        isLoading
+                        w="100%"
+                        bg="#0C8B28"
+                        color="white"
+                        // h={"4rem"}
+                        type="submit"
                     >
-                      Log In
+                        Log In
+                    </Button>
+                    :
+                    <Button
+                        _active={{ bg: "#0C8B28", color: "white" }}
+                        _hover={{
+                            bg: "white",
+                            color: "#0C8B28",
+                            borderColor: "#0C8B28",
+                            borderWidth: "1px",
+                        }}
+                        w="100%"
+                        bg="#0C8B28"
+                        color="white"
+                        // h={"4rem"}
+                        type="submit"
+                    >
+                        Log In
                     </Button>
                   </Form>
                 )}

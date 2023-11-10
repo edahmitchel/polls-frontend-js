@@ -9,8 +9,14 @@ export const pollsApiSlice = apiSlice.injectEndpoints({
                 url: `${POLLS_URL}/create`,
                 body: data
             })
+        }),
+        getPolls: builder.query({
+            query: () =>({
+                method: "GET",
+                url: `${POLLS_URL}/all`
+            })
         })
     })
 });
 
-export const {useCreateElectionMutation} = pollsApiSlice
+export const {useCreateElectionMutation, useGetPollsQuery} = pollsApiSlice;
